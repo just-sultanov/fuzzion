@@ -1,0 +1,41 @@
+{:deps {babashka/fs {:mvn/version "0.5.24"}}
+
+ :tasks
+ {:requires ([babashka.fs :as fs]
+             [clojure.string :as str])
+
+  outdated {:doc "Check for outdated dependencies"
+            :task (case (first *command-line-args*)
+                    "upgrade" (shell "clojure -M:nop:outdated --main antq.core --upgrade --force")
+                    (shell "clojure -M:nop:outdated --main antq.core"))}
+
+  clean {:doc "Run cleanup"
+         :task (doseq [dir ["target" "coverage"]]
+                 (fs/delete-tree dir))}
+
+  lint {:doc "Run linters"
+        :task (case (first *command-line-args*)
+                "fix" (shell "cljstyle fix src")
+                (do
+                  (shell "cljstyle check src")
+                  (shell "clj-kondo --lint src")))}
+
+  repl {:doc "Run nREPL"
+        :override-builtin true
+        :depends [clean]
+        :task (shell "clj -M:test:develop --main nrepl.cmdline --interactive")}
+
+  test {:doc "Run tests"
+        :override-builtin true
+        :task (case (first *command-line-args*)
+                "unit" (shell "clojure -M:nop:test --main kaocha.runner --focus :unit")
+                (shell (str/join \space (into ["clojure -M:nop:test --main kaocha.runner"] *command-line-args*))))}
+
+  jar {:doc "Build jar"
+       :override-builtin true
+       :depends [clean]
+       :task (case (first *command-line-args*)
+               "install" (do
+                           (clojure "-T:build jar")
+                           (clojure "-T:build install"))
+               (clojure "-T:build jar"))}}}

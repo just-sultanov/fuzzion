@@ -1,0 +1,29 @@
+#kaocha/v1
+ {:kaocha/fail-fast? false
+  :kaocha/color? true
+  :kaocha/reporter [kaocha.report/documentation]
+  :kaocha.plugin.randomize/randomize? true
+  :capture-output? true
+
+  :plugins [:kaocha.plugin/capture-output
+            :kaocha.plugin/cloverage
+            :kaocha.plugin/filter
+            :kaocha.plugin/hooks
+            :kaocha.plugin/print-invocations
+            :kaocha.plugin/randomize
+            :kaocha.plugin.alpha/info]
+
+  :tests [{:id :unit
+           :source-paths ["src/main/clojure"]
+           :test-paths ["src/test/clojure"]
+           :focus-meta [:unit]}]
+
+  :cloverage/opts {:output "coverage"
+                   :ns-regex []
+                   :ns-exclude-regex []
+                   :fail-threshold 0
+                   :low-watermark 50
+                   :high-watermark 80
+                   :summary? true
+                   :html? true
+                   :codecov? true}}

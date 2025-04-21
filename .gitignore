@@ -1,0 +1,6 @@
+.clj-kondo/.cache
+.cpcache
+.lsp/.cache
+coverage
+target
+.nrepl-port
