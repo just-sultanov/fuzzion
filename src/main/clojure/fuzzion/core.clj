@@ -51,3 +51,33 @@
             ~attr-map
             [^{:tag 'com.code_intelligence.jazzer.api.FuzzedDataProvider} ~input]
             ~body))))))
+
+
+;; Wrappers for FuzzedDataProvider
+;; Link: https://github.com/CodeIntelligenceTesting/jazzer/blob/main/src/main/java/com/code_intelligence/jazzer/api/FuzzedDataProvider.java
+
+(defn consume-boolean
+  ^Boolean [^FuzzedDataProvider in]
+  (.consumeBoolean in))
+
+
+(defn consume-booleans
+  ^"[Z" [^FuzzedDataProvider in ^Integer max-length]
+  (.consumeBooleans in max-length))
+
+
+(defn consume-byte
+  (^Byte [^FuzzedDataProvider in]
+   (.consumeByte in))
+  (^Byte [^FuzzedDataProvider in ^Byte min ^Byte max]
+   (.consumeByte in min max)))
+
+
+(defn consume-bytes
+  ^"[B" [^FuzzedDataProvider in ^Integer max-length]
+  (.consumeBytes in max-length))
+
+
+(defn consume-remaining-as-string
+  ^String [^FuzzedDataProvider in]
+  (.consumeRemainingAsString in))
