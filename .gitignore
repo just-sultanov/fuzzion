@@ -7,7 +7,7 @@
 .project
 .settings
 coverage
-fuzz
+fuzz/
 mise.toml
 pom.xml
 target
