@@ -1,6 +1,13 @@
+.classpath
 .clj-kondo/.cache
+.clj-kondo/imports
 .cpcache
 .lsp/.cache
-coverage
-target
 .nrepl-port
+.project
+.settings
+coverage
+fuzz
+mise.toml
+pom.xml
+target
