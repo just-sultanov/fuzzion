@@ -1,9 +1,10 @@
 (ns fuzzion.core-test
   (:require
-    [clojure.test :refer [deftest testing is]]
+    [clojure.test :refer [deftest is]]
     [fuzzion.core :as sut]))
 
 
-(deftest ^:unit square-test
-  (testing "dummy test"
-    (is (= 4 (sut/square 2)))))
+(deftest ^:unit generate-class-name-test
+  (is (= "example.core.DummyFuzzer"
+         (sut/generate-class-name "example.core" "DummyFuzzer")
+         (sut/generate-class-name "example.core" "dummy-fuzzer"))))
