@@ -13,4 +13,5 @@
 
 (comment
   (binding [*compile-path* "target/classes"]
+    (compile 'example.core)
     (compile 'example.core-fuzzer)))
