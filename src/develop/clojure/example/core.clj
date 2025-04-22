@@ -1,6 +1,7 @@
 (ns example.core
   (:require
-   [jsonista.core :as json]))
+    [jsonista.core :as json]))
+
 
 (defn parse-json
   [s]
