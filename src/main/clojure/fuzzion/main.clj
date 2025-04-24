@@ -3,10 +3,14 @@
     [fuzzion.cli :as cli]))
 
 
+(defn run
+  [opts]
+  (cond
+    (:help opts) (println cli/help)
+    (:version opts) (println cli/version)
+    :else (println (pr-str opts))))
+
+
 (defn -main
   [& args]
-  (let [{:keys [opts] :as parsed} (cli/parse args)]
-    (cond
-      (:help opts) (println cli/help)
-      (:version opts) (println cli/version)
-      :else (println (pr-str parsed)))))
+  (run (:opts (cli/parse args))))
