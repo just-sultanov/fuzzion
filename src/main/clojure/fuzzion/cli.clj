@@ -17,12 +17,15 @@
 
 (def spec
   {:spec
-   {:config {:ref "<FILE>"
-             :desc "Load configuration from a file (default: ./fuzzion.edn)"
-             :alias :c}
-    :classpath {:ref "<CLASSPATH>"
-                :desc "Specifies the classpath for fuzzer targets and dependencies (default: java.class.path system property)"
-                :alias :cp}
+   {
+    ;; ;; TODO: [2025-04-28, Ilshat Sultanov] Temporarily disable some options
+    ;; :config {:ref "<FILE>"
+    ;;          :desc "Load configuration from a file (default: ./fuzzion.edn)"
+    ;;          :alias :c
+    ;;          }
+    ;; :classpath {:ref "<CLASSPATH>"
+    ;;             :desc "Specifies the classpath for fuzzer targets and dependencies (default: java.class.path system property)"
+    ;;             :alias :cp}
     :timeout {:ref "<DURATION>"
               :desc "Automatically abort fuzzing target if no new branches are discovered during the specified period (default: 5m)"
               :default "5m"
