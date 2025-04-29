@@ -11,6 +11,12 @@
 
 (def basis (delay (b/create-basis {:project "deps.edn"})))
 
+(defn clean
+  [_]
+  (println "Cleaning...")
+  (doseq [path ["target" "coverage"]]
+    (b/delete {:path path})))
+
 (defn jar
   [_]
   (println "Writing pom...")

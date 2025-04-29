@@ -10,8 +10,7 @@
                     (shell "clojure -M:nop:outdated --main antq.core"))}
 
   clean {:doc "Run cleanup"
-         :task (doseq [dir ["target" "coverage"]]
-                 (fs/delete-tree dir))}
+         :task (clojure "-T:build clean")}
 
   lint {:doc "Run linters"
         :task (case (first *command-line-args*)
