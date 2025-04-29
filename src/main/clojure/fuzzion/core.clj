@@ -4,7 +4,10 @@
     [clojure.string :as str])
   (:import
     (com.code_intelligence.jazzer.api
-      FuzzedDataProvider)))
+      FuzzedDataProvider
+      FuzzerSecurityIssueHigh
+      FuzzerSecurityIssueLow
+      FuzzerSecurityIssueMedium)))
 
 
 ;; Target class generator
@@ -93,3 +96,25 @@
 (defn consume-remaining-as-string
   ^String [^FuzzedDataProvider in]
   (.consumeRemainingAsString in))
+
+
+;; Wrappers for issues
+
+(defn issue
+  ([]
+   (issue :low))
+  ([level]
+   (case level
+     :low (FuzzerSecurityIssueLow.)
+     :medium (FuzzerSecurityIssueMedium.)
+     :high (FuzzerSecurityIssueHigh.)))
+  ([level x]
+   (case level
+     :low (FuzzerSecurityIssueLow. x)
+     :medium (FuzzerSecurityIssueMedium. x)
+     :high (FuzzerSecurityIssueHigh. x)))
+  ([level ^String msg ^Exception e]
+   (case level
+     :low (FuzzerSecurityIssueLow. msg e)
+     :medium (FuzzerSecurityIssueMedium. msg e)
+     :high (FuzzerSecurityIssueHigh. msg e))))
