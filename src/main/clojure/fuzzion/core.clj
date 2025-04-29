@@ -78,6 +78,18 @@
   (.consumeBytes in max-length))
 
 
+(defn consume-long
+  (^long [^FuzzedDataProvider in]
+   (.consumeLong in))
+  (^long [^FuzzedDataProvider in ^long min ^long max]
+   (.consumeLong in min max)))
+
+
+(defn consume-longs
+  ^"[J" [^FuzzedDataProvider in ^Integer max-length]
+  (.consumeLongs in max-length))
+
+
 (defn consume-remaining-as-string
   ^String [^FuzzedDataProvider in]
   (.consumeRemainingAsString in))
