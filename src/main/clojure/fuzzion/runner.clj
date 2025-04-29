@@ -74,7 +74,8 @@
                                 :err :out
                                 :shutdown shutdown-handler
                                 :exit-fn exit-handler
-                                :pre-start-fn #(r/log (str/join " " (concat ["Running:"] (:cmd %))))})]
+                                :pre-start-fn #(r/log (format "Running: %s" (str/join \space (:cmd %))))})]
+    ;; jazzer output handler
     (future
       (try
         (with-open [reader (io/reader (:out process))]
@@ -91,7 +92,7 @@
                   ;; timer hasn't been initialized
                   (nil? @*interrupt-at) (r/log (format "[%s] - %s" target-name line))
 
-                  ;; default
+                  ;; otherwise
                   :else (r/log (format "[%s] %s - %s" target-name (time-between now @*interrupt-at) line))))
 
               (when-not @*interrupted?
@@ -101,20 +102,26 @@
             (let [now (LocalDateTime/now)]
               (r/log (format "[%s] %s - ERROR - %s" target-name (time-between now @*interrupt-at) (ex-message e))))))))
 
+    ;; timeout handler
     (future
       (loop []
         (let [now (LocalDateTime/now)
               interrupt-at @*interrupt-at]
           (cond
-            (nil? interrupt-at) (do
-                                  (Thread/sleep 1000)
-                                  (recur))
+            ;; timer hasn't been initialized
+            (nil? interrupt-at)
+            (do
+              (Thread/sleep 1000)
+              (recur))
 
-            (.isAfter now interrupt-at) (do
-                                          (r/log (format "[%s] %s - TIMEOUT" target-name (time-between now interrupt-at)))
-                                          (reset! *interrupted? true)
-                                          (p/destroy process))
+            ;; handle timeout
+            (.isAfter now interrupt-at)
+            (do
+              (r/log (format "[%s] %s - TIMEOUT" target-name (time-between now interrupt-at)))
+              (reset! *interrupted? true)
+              (p/destroy process))
 
+            ;; otherwise
             :else (when-not @*interrupted?
                     (let [interrupt-at (.minusSeconds interrupt-at 1)]
                       (r/log (format "[%s] %s" target-name (time-between now interrupt-at)))
