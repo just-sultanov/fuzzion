@@ -1,7 +1,8 @@
 (ns build
   (:require
-   [clojure.string :as str]
-   [clojure.tools.build.api :as b]))
+    [clojure.string :as str]
+    [clojure.tools.build.api :as b]))
+
 
 (def lib 'io.github.just-sultanov/fuzzion)
 (def version (-> (slurp "version") (str/trim)))
@@ -11,11 +12,13 @@
 
 (def basis (delay (b/create-basis {:project "deps.edn"})))
 
+
 (defn clean
   [_]
   (println "Cleaning...")
   (doseq [path ["target" "coverage"]]
     (b/delete {:path path})))
+
 
 (defn jar
   [_]
@@ -32,6 +35,7 @@
   (b/jar {:class-dir class-dir
           :jar-file jar-file}))
 
+
 (defn install
   [_]
   (println "Installing to `~/.m2`...")
@@ -40,3 +44,17 @@
               :version version
               :basis @basis
               :jar-file jar-file}))
+
+
+(defn compile-fuzzers
+  [_]
+  (println "Copying sources...")
+  (b/copy-dir {:src-dirs ["src/develop/clojure" "src/develop/resources"
+                          "src/main/clojure"  "src/main/resources"
+                          "src/fuzz/clojure" "src/fuzz/resources"]
+               :target-dir class-dir})
+  (println "Compiling...")
+  (b/compile-clj {:basis (b/create-basis {:project "deps.edn"
+                                          :aliases [:develop :fuzz]})
+                  :ns-compile '[example.core-fuzzer]
+                  :class-dir class-dir}))

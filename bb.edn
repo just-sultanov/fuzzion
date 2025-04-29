@@ -37,4 +37,12 @@
                "install" (do
                            (clojure "-T:build jar")
                            (clojure "-T:build install"))
-               (clojure "-T:build jar"))}}}
+               (clojure "-T:build jar"))}
+
+  compile-fuzzers {:doc "Compile fuzzers"
+                   :depends [clean]
+                   :task (clojure "-T:build compile-fuzzers")}
+
+  fuzz {:doc "Fuzz targets"
+        :depends [compile-fuzzers]
+        :task (clojure (format "-M:develop:fuzz --main fuzzion.main %s" (str/join \space *command-line-args*)))}}}
