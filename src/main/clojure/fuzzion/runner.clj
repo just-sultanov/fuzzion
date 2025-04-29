@@ -17,21 +17,21 @@
 (defn load-namespaces
   []
   (reload/init {:output :quiet})
-  (->> (reload/find-namespaces #".*-fuzzer$")
-       (mapv
-         (fn [sym]
-           (require sym)
-           (find-ns sym)))))
+  (mapv
+    (fn [sym]
+      (require sym)
+      (find-ns sym))
+    (reload/find-namespaces #".*-fuzzer$")))
 
 
 (defn find-targets
   [nses]
   (reduce
     (fn [acc ns]
-      (let [vars (vals (ns-interns ns))]
-        (->> vars
-             (filter (comp ::f/target meta))
-             (into acc))))
+      (->> (ns-interns ns)
+           (vals)
+           (filter (comp ::f/target meta))
+           (into acc)))
     [] nses))
 
 
@@ -98,9 +98,8 @@
               (when-not @*interrupted?
                 (recur)))))
         (catch Exception e
-          (when-not @*interrupted?
-            (let [now (LocalDateTime/now)]
-              (r/log (format "[%s] %s - ERROR - %s" target-name (time-between now @*interrupt-at) (ex-message e))))))))
+          (let [now (LocalDateTime/now)]
+            (r/log (format "[%s] %s - ERROR - %s" target-name (time-between now @*interrupt-at) (ex-message e)))))))
 
     ;; timeout handler
     (future
