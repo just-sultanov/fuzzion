@@ -38,7 +38,8 @@ Let's add an alias for `clojure.tools.deps`, in which we will indicate where our
 ```clojure
 ;; deps.edn
 {:aliases
-  {:fuzz {:extra-paths ["src/fuzz/clojure" "target/classes"]}}}
+  {:fuzz {:extra-paths ["src/fuzz/clojure" "target/classes"]
+          :extra-deps {io.github.just-sultanov/fuzzion "RELEASE"}}}}
 ```
 
 Before starting fuzzing, we will need to compile the source code with the targets.
@@ -89,7 +90,7 @@ Found 1 target(s) in 1 namespace(s)
 Target: example.core-fuzzer/square
 Timeout: 10s
 --------------------------------------------------------------------------------
-Command: jazzer --cp=src/develop/clojure:src/develop/resources:src/fuzz/clojure:target/classes:src/main/clojure:src/main/resources:/home/researcher/.m2/repository/babashka/fs/0.5.24/fs-0.5.24.jar:/home/researcher/.m2/repository/babashka/process/0.6.23/process-0.6.23.jar:/home/researcher/.m2/repository/camel-snake-kebab/camel-snake-kebab/0.4.3/camel-snake-kebab-0.4.3.jar:/home/researcher/.m2/repository/cider/cider-nrepl/0.55.2/cider-nrepl-0.55.2.jar:/home/researcher/.m2/repository/com/code-intelligence/jazzer-api/0.24.0/jazzer-api-0.24.0.jar:/home/researcher/.m2/repository/io/github/tonsky/clj-reload/0.9.4/clj-reload-0.9.4.jar:/home/researcher/.m2/repository/metosin/jsonista/0.3.13/jsonista-0.3.13.jar:/home/researcher/.m2/repository/nrepl/nrepl/1.3.1/nrepl-1.3.1.jar:/home/researcher/.m2/repository/org/babashka/cli/0.8.65/cli-0.8.65.jar:/home/researcher/.m2/repository/org/clojure/clojure/1.12.0/clojure-1.12.0.jar:/home/researcher/.m2/repository/cider/orchard/0.34.0/orchard-0.34.0.jar:/home/researcher/.m2/repository/mx/cider/logjam/0.3.0/logjam-0.3.0.jar:/home/researcher/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.18.2/jackson-core-2.18.2.jar:/home/researcher/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.18.2/jackson-databind-2.18.2.jar:/home/researcher/.m2/repository/com/fasterxml/jackson/datatype/jackson-datatype-jsr310/2.18.2/jackson-datatype-jsr310-2.18.2.jar:/home/researcher/.m2/repository/org/clojure/core.specs.alpha/0.4.74/core.specs.alpha-0.4.74.jar:/home/researcher/.m2/repository/org/clojure/spec.alpha/0.5.238/spec.alpha-0.5.238.jar:/home/researcher/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.18.2/jackson-annotations-2.18.2.jar --target_class=example.core_fuzzer.Square
+Command: jazzer --cp=src/develop/clojure:src/fuzz/clojure:target/classes:src/main/clojure:/home/developer/.m2/repository/babashka/fs/0.5.24/fs-0.5.24.jar:/home/developer/.m2/repository/babashka/process/0.6.23/process-0.6.23.jar:/home/developer/.m2/repository/camel-snake-kebab/camel-snake-kebab/0.4.3/camel-snake-kebab-0.4.3.jar:/home/developer/.m2/repository/com/code-intelligence/jazzer-api/0.24.0/jazzer-api-0.24.0.jar:/home/developer/.m2/repository/io/github/tonsky/clj-reload/0.9.4/clj-reload-0.9.4.jar:/home/developer/.m2/repository/org/babashka/cli/0.8.65/cli-0.8.65.jar:/home/developer/.m2/repository/org/clojure/clojure/1.12.0/clojure-1.12.0.jar:/home/developer/.m2/repository/org/clojure/core.specs.alpha/0.4.74/core.specs.alpha-0.4.74.jar:/home/developer/.m2/repository/org/clojure/spec.alpha/0.5.238/spec.alpha-0.5.238.jar --target_class=example.core_fuzzer.Square
 [example.core-fuzzer/square] - INFO: Loaded 320 hooks from com.code_intelligence.jazzer.runtime.TraceCmpHooks
 [example.core-fuzzer/square] - INFO: Loaded 5 hooks from com.code_intelligence.jazzer.runtime.TraceDivHooks
 [example.core-fuzzer/square] - INFO: Loaded 2 hooks from com.code_intelligence.jazzer.runtime.TraceIndirHooks
