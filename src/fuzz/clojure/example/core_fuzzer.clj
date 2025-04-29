@@ -11,6 +11,14 @@
     (catch Exception _)))
 
 
+(f/deftarget square
+  [input]
+  (try
+    (when (= 4 (sut/square (f/consume-long input)))
+      (throw (f/issue :high "You are found a bug")))
+    (catch ArithmeticException _)))
+
+
 (comment
   (binding [*compile-path* "target/classes"]
     (compile 'example.core)
