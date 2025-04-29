@@ -17,8 +17,7 @@
 
 (def spec
   {:spec
-   {
-    ;; ;; TODO: [2025-04-28, Ilshat Sultanov] Temporarily disable some options
+   {;; ;; TODO: [2025-04-28, Ilshat Sultanov] Temporarily disable some options
     ;; :config {:ref "<FILE>"
     ;;          :desc "Load configuration from a file (default: ./fuzzion.edn)"
     ;;          :alias :c
