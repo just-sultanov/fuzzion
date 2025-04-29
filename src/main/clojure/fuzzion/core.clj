@@ -24,7 +24,7 @@
          package-name (ns-name *ns*)
          class-name (generate-class-name package-name target-name)
          impl-prefix (format "-%s-" target-name)
-         attr-map (assoc metadata ::target true ::target-class class-name)]
+         attr-map (assoc metadata ::target true, ::target-name target-name, ::target-class class-name)]
      (case (:input attr-map)
        :bytes
        `(do
