@@ -28,7 +28,7 @@
         :override-builtin true
         :task (case (first *command-line-args*)
                 "unit" (shell "clojure -M:nop:test --main kaocha.runner --focus :unit")
-                (shell (str/join \space (into ["clojure -M:nop:test --main kaocha.runner"] *command-line-args*))))}
+                (shell (format "clojure -M:nop:test --main kaocha.runner %s" (str/join \space *command-line-args*))))}
 
   jar {:doc "Build jar"
        :override-builtin true
