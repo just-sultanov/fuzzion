@@ -10,4 +10,5 @@
     (cond
       (:help opts) (println cli/help)
       (:version opts) (println cli/version)
-      :else (runner/run opts))))
+      :else (let [{:keys [exit]} (runner/run opts)]
+              (System/exit exit)))))
