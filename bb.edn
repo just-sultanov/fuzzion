@@ -14,10 +14,10 @@
 
   lint {:doc "Run linters"
         :task (case (first *command-line-args*)
-                "fix" (shell "cljstyle fix src")
+                "fix" (shell "cljstyle fix src build.clj deps.edn bb.edn")
                 (do
-                  (shell "cljstyle check src")
-                  (shell "clj-kondo --lint src")))}
+                  (shell "cljstyle check src build.clj deps.edn bb.edn")
+                  (shell "clj-kondo --lint src build.clj")))}
 
   repl {:doc "Run nREPL"
         :override-builtin true
