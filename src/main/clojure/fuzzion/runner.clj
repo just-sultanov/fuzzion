@@ -158,7 +158,7 @@
   (r/log dashes)
   (r/log (format "[%s] Started at: %s" target-name started-at))
   (r/log (format "[%s] Finished at: %s" target-name finished-at))
-  (r/log (format "[%s] Total lead time: %s" target-name lead-time))
+  (r/log (format "[%s] Lead time: %s" target-name lead-time))
   (r/log (format "[%s] Exit code: %s" target-name exit))
   (r/log dashes))
 
