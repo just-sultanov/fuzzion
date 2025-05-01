@@ -1,4 +1,5 @@
 (ns fuzzion.main
+  (:gen-class)
   (:require
     [fuzzion.cli :as cli]
     [fuzzion.runner :as runner]))
