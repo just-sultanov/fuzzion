@@ -305,7 +305,7 @@
   Returns a `char` or `char` in range `[min, max]`"
   ([^FuzzedDataProvider in]
    (.consumeChar in))
-  ([^FuzzedDataProvider in ^char min ^char max]
+  ([^FuzzedDataProvider in min max]
    (.consumeChar in min max)))
 
 
