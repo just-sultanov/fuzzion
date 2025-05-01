@@ -39,7 +39,8 @@ Let's add an alias for `clojure.tools.deps`, in which we will indicate where our
 ;; deps.edn
 {:aliases
   {:fuzz {:extra-paths ["src/fuzz/clojure" "target/classes"]
-          :extra-deps {io.github.just-sultanov/fuzzion "RELEASE"}}}}
+          :extra-deps {io.github.just-sultanov/fuzzion "RELEASE"}
+          :main-opts ["--main" "fuzzion.main"]}}}
 ```
 
 Before starting fuzzing, we will need to compile the source code with the targets.
@@ -57,7 +58,7 @@ We can add a simple task using `clojure.tools.build`.
   (println "Cleaning...")
   (b/delete {:path "target"}))
 
-(defn compile-fuzzers
+(defn fuzz:compile
   [_]
   (println "Copying sources...")
   (b/copy-dir {:src-dirs ["src/main/clojure" "src/fuzz/clojure"]
@@ -72,7 +73,7 @@ We can add a simple task using `clojure.tools.build`.
 $ clojure -T:build clean
 Cleaning...
 
-$ clojure -T:build compile-fuzzers
+$ clojure -T:build fuzz:compile
 Copying sources...
 Compiling...
 ```
@@ -82,7 +83,7 @@ Our target under the hood has been compiled into a special class `example.core_f
 Now we have everything ready for fuzzing. Let's run the following commands.
 
 ```bash
-$ clojure -M:fuzz --main fuzzion.main --timeout 10s
+$ clojure -M:fuzz --timeout 10s
 --------------------------------------------------------------------------------
 Found 1 target(s) in 1 namespace(s)
 --------------------------------------------------------------------------------
