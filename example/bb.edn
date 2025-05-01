@@ -11,10 +11,10 @@
                   (shell "cljstyle check src build.clj deps.edn project.clj bb.edn")
                   (shell "clj-kondo --lint src build.clj")))}
 
-  compile-fuzzers {:doc "Compile fuzzers"
-                   :depends [clean]
-                   :task (clojure "-T:build compile-fuzzers")}
+  fuzz:compile {:doc "Compile fuzzers"
+                :depends [clean]
+                :task (clojure "-T:build fuzz:compile")}
 
   fuzz {:doc "Fuzz targets"
-        :depends [compile-fuzzers]
+        :depends [fuzz:compile]
         :task (clojure (format "-M:fuzz %s" (str/join \space *command-line-args*)))}}}

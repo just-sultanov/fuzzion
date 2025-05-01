@@ -9,7 +9,7 @@
   (b/delete {:path "target"}))
 
 
-(defn compile-fuzzers
+(defn fuzz:compile
   [_]
   (println "Copying sources...")
   (b/copy-dir {:src-dirs ["src/main/clojure"  "src/main/resources"
