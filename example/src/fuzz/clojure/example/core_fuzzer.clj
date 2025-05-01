@@ -15,5 +15,5 @@
   [input]
   (try
     (when (= 4 (sut/square (f/consume-long input)))
-      (throw (f/issue :high "You are found a bug")))
+      (throw (f/issue :high "You found a bug")))
     (catch ArithmeticException _)))

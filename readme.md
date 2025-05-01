@@ -29,7 +29,7 @@ Let's add a simple target.
   [input]
   (try
     (when (= 4 (sut/square (f/consume-long input)))
-      (throw (f/issue :high "You are found a bug")))
+      (throw (f/issue :high "You found a bug")))
     (catch ArithmeticException _)))
 ```
 
@@ -148,7 +148,7 @@ Command: jazzer --cp=src/develop/clojure:src/fuzz/clojure:target/classes:src/mai
 [example.core-fuzzer/square] 00:00:10.000 - #2  INITED cov: 42 ft: 42 corp: 1/1b exec/s: 0 rss: 987Mb
 [example.core-fuzzer/square] 00:00:09.995 - #4  pulse  cov: 42 ft: 42 corp: 1/1b lim: 4 exec/s: 0 rss: 987Mb
 [example.core-fuzzer/square] 00:00:09.993 -
-[example.core-fuzzer/square] 00:00:09.993 - == Java Exception: com.code_intelligence.jazzer.api.FuzzerSecurityIssueHigh: You are found a bug
+[example.core-fuzzer/square] 00:00:09.993 - == Java Exception: com.code_intelligence.jazzer.api.FuzzerSecurityIssueHigh: You found a bug
 [example.core-fuzzer/square] 00:00:09.993 -     at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
 [example.core-fuzzer/square] 00:00:09.993 -     at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
 [example.core-fuzzer/square] 00:00:09.993 -     at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
