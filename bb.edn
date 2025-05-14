@@ -1,4 +1,4 @@
-{:deps {babashka/fs {:mvn/version "0.5.24"}}
+{:deps {babashka/fs {:mvn/version "0.5.25"}}
 
  :tasks
  {:requires ([babashka.fs :as fs]
