@@ -65,16 +65,17 @@
 
 
 (defn execute
-  [{:keys [target-name timeout shutdown-handler exit-handler]
+  [{:keys [target timeout shutdown-handler exit-handler]
     :or {timeout "5m"}} cmd]
-  (let [*interrupt-at (atom nil)
+  (let [target-name (::f/target (meta target))
+        *interrupt-at (atom nil)
         *interrupted? (atom false)
         timeout (parse-duration timeout)
         process (p/process cmd {:out :pipe
                                 :err :out
                                 :shutdown shutdown-handler
                                 :exit-fn exit-handler
-                                :pre-start-fn #(r/log (format "Command: %s" (str/join \space (:cmd %))))})]
+                                :pre-start-fn #(r/log (format "[%s] - Command: %s" target-name (str/join \space (:cmd %))))})]
     ;; jazzer output handler
     (future
       (try
@@ -141,89 +142,82 @@
           (p/destroy process))))))
 
 
-(def dashes
-  (str/join (repeat 80 "-")))
-
-
 (defmethod r/report :begin-fuzz-target
-  [_type {:keys [target-name timeout]}]
-  (r/log dashes)
-  (r/log (format "Target: %s" target-name))
-  (r/log (format "Timeout: %s" timeout))
-  (r/log dashes))
+  [_type {:keys [target]}]
+  (r/log (format "\n\nTarget: %s\n" (::f/target (meta target)))))
 
 
 (defmethod r/report :end-fuzz-target
-  [_type {:keys [exit target-name started-at finished-at lead-time]}]
-  (r/log dashes)
-  (r/log (format "[%s] Started at: %s" target-name started-at))
-  (r/log (format "[%s] Finished at: %s" target-name finished-at))
-  (r/log (format "[%s] Lead time: %s" target-name lead-time))
-  (r/log (format "[%s] Exit code: %s" target-name exit))
-  (r/log dashes))
+  [_type {:keys [exit cmd dry-run target started-at finished-at]}]
+  (let [target-name (::f/target (meta target))]
+    (when dry-run (r/log (format "[%s] Command: %s" target-name cmd)))
+    (r/log (format "[%s] Started at: %s" target-name started-at))
+    (r/log (format "[%s] Finished at: %s" target-name finished-at))
+    (r/log (format "[%s] Lead time: %s" target-name (time-between started-at finished-at)))
+    (r/log (format "[%s] Exit code: %s" target-name exit))))
+
+
+(defn make-cmd
+  [{:as opts :keys [target classpath]
+    :or {classpath (System/getProperty "java.class.path")}}]
+  (let [{::f/keys [target-class]} (meta target)]
+    (format "jazzer --cp=%s --target_class=%s" classpath target-class)))
 
 
 (defn run-jazzer
-  [{:keys [timeout classpath targets]}]
-  (doall
-    (for [target targets]
-      (let [{:keys [ns] ::f/keys [target-name target-class]} (meta target)
-            target-name (format "%s/%s" ns target-name)
-            started-at (LocalDateTime/now)
-            _ (r/report :begin-fuzz-target {:target-name target-name
-                                            :timeout timeout
-                                            :classpath classpath
-                                            :started-at started-at})
-            cmd (format "jazzer --cp=%s --target_class=%s" classpath target-class)
-            {:keys [exit cmd]} (execute {:timeout timeout, :target-name target-name} cmd)
+  [{:as opts :keys [dry-run targets]}]
+  (reduce
+    (fn [acc target]
+      (let [started-at (LocalDateTime/now)
+            opts (-> opts (dissoc :nses :targets) (assoc :target target))
+            _ (r/report :begin-fuzz-target opts)
+            cmd (make-cmd opts)
+            {:keys [exit cmd]} (if dry-run
+                                 {:exit 0, :cmd cmd}
+                                 (execute opts cmd))
             finished-at (LocalDateTime/now)
-            res {:exit (or exit 0)
-                 :cmd cmd
-                 :target-name target-name
-                 :timeout timeout
-                 :classpath classpath
-                 :started-at started-at
-                 :finished-at finished-at
-                 :lead-time (time-between started-at finished-at)}]
+            res (assoc opts :exit exit :cmd cmd :started-at started-at :finished-at finished-at)]
         (r/report :end-fuzz-target res)
-        res))))
+        (assoc acc target res)))
+    {} targets))
 
 
 (defmethod r/report :begin-run-jazzer
-  [_type {:keys [nses targets]}]
-  (r/log dashes)
-  (r/log (format "Found %s target(s) in %s namespace(s)" (count targets) (count nses)))
-  (r/log dashes))
+  [_type {:keys [nses targets timeout]}]
+  (r/log (format "\nFound %s target(s) in %s namespace(s):" (count targets) (count nses)))
+  (r/log (->> targets
+              (mapv #(format "  - %s" (-> % meta ::f/target)))
+              (str/join \newline)))
+  (r/log "\nConfiguration:")
+  (r/log (format "  - Timeout %s" timeout)))
 
 
 (defmethod r/report :end-run-jazzer
-  [_type {:keys [started-at finished-at lead-time]}]
-  (r/log dashes)
-  (r/log (format "Started at: %s" started-at))
+  [_type {:keys [nses targets reports started-at finished-at]}]
+  (r/log (format "\n\nFuzzing has been completed for %s target(s) in %s namespace(s):" (count targets) (count nses)))
+  (r/log (->> targets
+              (mapv (fn [target]
+                      (let [report (get reports target)
+                            target-name (::f/target (meta target))]
+                        (format "  - %s (%s)"
+                                target-name
+                                (time-between (:started-at report)
+                                              (:finished-at report))))))
+              (str/join \newline)))
+  (r/log (format "\nStarted at: %s" started-at))
   (r/log (format "Finished at: %s" finished-at))
-  (r/log (format "Total lead time: %s" lead-time))
-  (r/log dashes))
+  (r/log (format "Total lead time: %s" (time-between started-at finished-at))))
 
 
 (defn run
-  [{:keys [timeout]}]
+  [opts]
   (let [nses (load-namespaces)
         targets (find-targets nses)
+        opts (assoc opts :nses nses :targets targets)
         started-at (LocalDateTime/now)
-        classpath (System/getProperty "java.class.path")
-        _ (r/report :begin-run-jazzer {:nses nses
-                                       :targets targets
-                                       :timeout timeout
-                                       :started-at started-at})
-        reports (run-jazzer {:classpath classpath, :targets targets, :timeout timeout})
+        _ (r/report :begin-run-jazzer (assoc opts :started-at started-at))
+        reports (run-jazzer opts)
         finished-at (LocalDateTime/now)
-        res {:nses nses
-             :exit 0
-             :targets targets
-             :reports reports
-             :timeout timeout
-             :started-at started-at
-             :finished-at finished-at
-             :lead-time (time-between started-at finished-at)}]
+        res (assoc opts :exit 0 :reports reports :started-at started-at :finished-at finished-at)]
     (r/report :end-run-jazzer res)
     res))
