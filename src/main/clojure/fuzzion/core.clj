@@ -25,10 +25,10 @@
    `(deftarget ~target {} ~params ~body))
   ([target metadata [input] body]
    (let [target-name (name target)
-         package-name (ns-name *ns*)
+         package-name (name (ns-name *ns*))
          class-name (generate-class-name package-name target-name)
          impl-prefix (format "-%s-" target-name)
-         attr-map (assoc metadata ::target true, ::target-name target-name, ::target-class class-name)]
+         attr-map (assoc metadata ::target (format "%s/%s" package-name target-name) ::target-class class-name)]
      (case (:input attr-map)
        :bytes
        `(do
