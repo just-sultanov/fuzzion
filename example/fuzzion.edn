@@ -11,13 +11,17 @@
 
  :overrides
  {".*"
-  {"--jvm_args" "--enable-preview:-Xmx1000m:-XX:-OmitStackTraceInFastThrow:-XX:+UseParallelGC:-XX:+CriticalJNINative:-XX:+EnableDynamicAgentLoading"
-   "--keep_going" 10
-   "-timeout" 300
-   "-reduce_inputs" 0
-   "-use_value_profile" 1
+  {;; libFuzzer opts
    "-create_missing_dirs" 1
-   "-print_final_stats" 1
    "-print_corpus_stats" 1
    "-print_coverage" 1
-   "-print_full_coverage" 1}}}
+   "-print_final_stats" 1
+   "-print_full_coverage" 1
+   "-reduce_inputs" 0
+   "-timeout" 300
+   "-use_value_profile" 1
+   ;; fuzzer opts
+   "--instrumentation_excludes" "example.fuzzers.**"
+   "--instrumentation_includes" "example.**"
+   "--jvm_args" "--enable-preview:-Xmx1000m:-XX:-OmitStackTraceInFastThrow:-XX:+UseParallelGC:-XX:+CriticalJNINative:-XX:+EnableDynamicAgentLoading"
+   "--keep_going" 10}}}

@@ -191,6 +191,8 @@
         dict-dir (fs/path (:dict-dir config) target-path)
         dict-file (fs/file dict-dir "dict")
         coverage-dir (fs/path (:coverage-dir config) target-path)
+        coverage-report-file (fs/file coverage-dir "report.txt")
+        coverage-dump-file (fs/file coverage-dir "dump.exec")
         reproducer-dir (fs/path (:reproducer-dir config) target-path)
         crash-dir (fs/path (:crash-dir config) target-path)
         user-opts (reduce-kv
@@ -200,12 +202,14 @@
                         acc))
                     {} (:overrides config))
         default-opts (cond-> {;; libFuzzer opts
-                              "-create_missing_dirs" 1
                               "-artifact_prefix" (str crash-dir fs/file-separator)
+                              "-create_missing_dirs" 1
                               "-dict" dict-file
                               ;; jazzer opts
-                              "--reproducer_path" (str reproducer-dir fs/file-separator)
+                              "--coverage_dump" coverage-dump-file
+                              "--coverage_report" coverage-report-file
                               "--cp" classpath
+                              "--reproducer_path" (str reproducer-dir fs/file-separator)
                               "--target_class" target-class}
                        (fs/exists? dict-file) (assoc "-dict" dict-file))
         jazzer-opts (->> (merge default-opts user-opts)
