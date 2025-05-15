@@ -18,5 +18,5 @@
   (println "Compiling...")
   (b/compile-clj {:basis (b/create-basis {:project "deps.edn"
                                           :aliases [:fuzz]})
-                  :ns-compile '[example.core-fuzzer]
+                  :ns-compile '[example.fuzzers.core-fuzzer]
                   :class-dir "target/classes"}))

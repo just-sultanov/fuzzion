@@ -8,7 +8,7 @@
                     :resource-paths ["src/fuzz/resources"]
                     :target-path "target"
                     :compile-path "target/classes"
-                    :aot [example.core-fuzzer]
+                    :aot [example.fuzzers.core-fuzzer]
                     :main fuzzion.main
                     :dependencies [[io.github.just-sultanov/fuzzion "0.0.1-SNAPSHOT"]]}}
 

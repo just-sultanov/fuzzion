@@ -1,0 +1,11 @@
+Branch coverage:
+core.clj: 0/0 (NaN%)
+
+Line coverage:
+core.clj: 2/5 (40.00%)
+
+Incompletely covered lines:
+core.clj: [11]
+
+Missed lines:
+core.clj: [1, 6, 8]

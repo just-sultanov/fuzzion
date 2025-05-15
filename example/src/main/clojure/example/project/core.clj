@@ -1,4 +1,4 @@
-(ns example.core
+(ns example.project.core
   (:require
     [jsonista.core :as json]))
 
