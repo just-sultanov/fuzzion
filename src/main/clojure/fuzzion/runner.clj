@@ -1,5 +1,6 @@
 (ns fuzzion.runner
   (:require
+    [babashka.fs :as fs]
     [babashka.process :as p]
     [clj-reload.core :as reload]
     [clojure.java.io :as io]
@@ -15,22 +16,36 @@
 
 
 (defn load-namespaces
-  []
-  (reload/init {:output :quiet})
-  (mapv
-    (fn [sym]
-      (require sym)
-      (find-ns sym))
-    (reload/find-namespaces #".*-fuzzer$")))
+  [ns-patterns]
+  (let [re (->> ns-patterns
+                (str/join "|")
+                (re-pattern))]
+    (reload/init {:output :quiet})
+    (mapv
+      (fn [sym]
+        (require sym)
+        (find-ns sym))
+      (reload/find-namespaces re))))
+
+
+(defn fuzz-target?
+  [{:keys [skip-meta focus-meta]} target]
+  (let [m (meta target)]
+    (cond
+      (seq focus-meta) (and (::f/target m)
+                            (seq (select-keys m focus-meta)))
+      (seq skip-meta) (and (::f/target m)
+                           (empty? (select-keys m skip-meta)))
+      :else (::f/target m))))
 
 
 (defn find-targets
-  [nses]
+  [opts nses]
   (reduce
     (fn [acc ns]
       (->> (ns-interns ns)
            (vals)
-           (filter (comp ::f/target meta))
+           (filter (partial fuzz-target? opts))
            (into acc)))
     [] nses))
 
@@ -209,10 +224,30 @@
   (r/log (format "Total lead time: %s" (time-between started-at finished-at))))
 
 
+(def default-config
+  {:report-dir "fuzz/reports"
+   :corpus-dir "fuzz/corpus"
+   :ns-patterns [".+\-fuzzer$"]
+   :skip-meta [:skip]
+   :focus-meta []})
+
+
+(defn parse-config
+  [file]
+  (if-not (fs/exists? file)
+    default-config
+    (->> file
+         (slurp)
+         (read-string)
+         (merge default-config))))
+
+
 (defn run
   [opts]
-  (let [nses (load-namespaces)
-        targets (find-targets nses)
+  (let [opts (update opts :config parse-config)
+        {:keys [ns-patterns skip-meta focus-meta]} (:config opts)
+        nses (load-namespaces ns-patterns)
+        targets (find-targets {:skip-meta skip-meta, :focus-meta focus-meta} nses)
         opts (assoc opts :nses nses :targets targets)
         started-at (LocalDateTime/now)
         _ (r/report :begin-run-jazzer (assoc opts :started-at started-at))
