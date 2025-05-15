@@ -172,11 +172,46 @@
     (r/log (format "[%s] Exit code: %s" target-name exit))))
 
 
-(defn make-cmd
-  [{:as opts :keys [target classpath]
+(defn target-name->path
+  [target-name]
+  (-> target-name
+      (str/replace #"/|\." fs/file-separator)
+      (str/replace "-" "_")))
+
+
+(defn build-opts
+  [{:keys [config target classpath]
     :or {classpath (System/getProperty "java.class.path")}}]
-  (let [{::f/keys [target-class]} (meta target)]
-    (format "jazzer --cp=%s --target_class=%s" classpath target-class)))
+  (let [m (meta target)
+        target-name (::f/target m)
+        target-class (::f/target-class m)
+        target-path (target-name->path target-name)
+        report-dir (fs/path (:report-dir config) target-path)
+        corpus-dir (fs/path (:corpus-dir config) target-path)
+        coverage-dir (fs/path (:coverage-dir config) target-path)
+        reproducer-dir (fs/path (:reproducer-dir config) target-path)
+        crash-dir (fs/path (:crash-dir config) target-path)
+        user-opts (reduce-kv
+                    (fn [acc k v]
+                      (if (re-matches (re-pattern k) target-name)
+                        (merge acc v)
+                        acc))
+                    {} (:overrides config))
+        default-opts {;; libFuzzer opts
+                      "-create_missing_dirs" 1
+                      "-artifact_prefix" (str crash-dir fs/file-separator)
+                      ;; jazzer opts
+                      "--reproducer_path" (str reproducer-dir fs/file-separator)
+                      "--cp" classpath
+                      "--target_class" target-class}
+        jazzer-opts (->> (merge default-opts user-opts)
+                         (reduce-kv
+                           (fn [acc opt value]
+                             (conj acc (format "%s=%s" opt value)))
+                           [])
+                         (str/join \space))]
+    {:jazzer-cmd (format "jazzer %s %s" jazzer-opts corpus-dir)
+     :ensure-dirs [report-dir corpus-dir coverage-dir reproducer-dir crash-dir]}))
 
 
 (defn run-jazzer
@@ -186,10 +221,12 @@
       (let [started-at (LocalDateTime/now)
             opts (-> opts (dissoc :nses :targets) (assoc :target target))
             _ (r/report :begin-fuzz-target opts)
-            cmd (make-cmd opts)
+            {:keys [jazzer-cmd ensure-dirs]} (build-opts opts)
             {:keys [exit cmd]} (if dry-run
-                                 {:exit 0, :cmd cmd}
-                                 (execute opts cmd))
+                                 {:exit 0, :cmd jazzer-cmd}
+                                 (do
+                                   (run! fs/create-dirs ensure-dirs)
+                                   (execute opts jazzer-cmd)))
             finished-at (LocalDateTime/now)
             res (assoc opts :exit exit :cmd cmd :started-at started-at :finished-at finished-at)]
         (r/report :end-fuzz-target res)
@@ -232,6 +269,9 @@
 (def default-config
   {:report-dir "fuzz/reports"
    :corpus-dir "fuzz/corpus"
+   :coverage-dir "fuzz/coverage"
+   :reproducer-dir "fuzz/reproducers"
+   :crash-dir "fuzz/crashes"
    :ns-patterns [".+-fuzzer$"]
    :skip-meta [:skip]
    :focus-meta []})
