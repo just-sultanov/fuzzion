@@ -188,6 +188,8 @@
         target-path (target-name->path target-name)
         report-dir (fs/path (:report-dir config) target-path)
         corpus-dir (fs/path (:corpus-dir config) target-path)
+        dict-dir (fs/path (:dict-dir config) target-path)
+        dict-file (fs/file dict-dir "dict")
         coverage-dir (fs/path (:coverage-dir config) target-path)
         reproducer-dir (fs/path (:reproducer-dir config) target-path)
         crash-dir (fs/path (:crash-dir config) target-path)
@@ -197,13 +199,15 @@
                         (merge acc v)
                         acc))
                     {} (:overrides config))
-        default-opts {;; libFuzzer opts
-                      "-create_missing_dirs" 1
-                      "-artifact_prefix" (str crash-dir fs/file-separator)
-                      ;; jazzer opts
-                      "--reproducer_path" (str reproducer-dir fs/file-separator)
-                      "--cp" classpath
-                      "--target_class" target-class}
+        default-opts (cond-> {;; libFuzzer opts
+                              "-create_missing_dirs" 1
+                              "-artifact_prefix" (str crash-dir fs/file-separator)
+                              "-dict" dict-file
+                              ;; jazzer opts
+                              "--reproducer_path" (str reproducer-dir fs/file-separator)
+                              "--cp" classpath
+                              "--target_class" target-class}
+                       (fs/exists? dict-file) (assoc "-dict" dict-file))
         jazzer-opts (->> (merge default-opts user-opts)
                          (reduce-kv
                            (fn [acc opt value]
@@ -211,7 +215,7 @@
                            [])
                          (str/join \space))]
     {:jazzer-cmd (format "jazzer %s %s" jazzer-opts corpus-dir)
-     :ensure-dirs [report-dir corpus-dir coverage-dir reproducer-dir crash-dir]}))
+     :ensure-dirs [report-dir corpus-dir dict-dir coverage-dir reproducer-dir crash-dir]}))
 
 
 (defn run-jazzer
@@ -269,6 +273,7 @@
 (def default-config
   {:report-dir "fuzz/reports"
    :corpus-dir "fuzz/corpus"
+   :dict-dir "fuzz/dicts"
    :coverage-dir "fuzz/coverage"
    :reproducer-dir "fuzz/reproducers"
    :crash-dir "fuzz/crashes"
