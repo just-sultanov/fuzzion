@@ -198,13 +198,18 @@
 
 
 (defmethod r/report :begin-run-jazzer
-  [_type {:keys [nses targets timeout]}]
-  (r/log (format "\nFound %s target(s) in %s namespace(s):" (count targets) (count nses)))
-  (r/log (->> targets
-              (mapv #(format "  - %s" (-> % meta ::f/target)))
-              (str/join \newline)))
-  (r/log "\nConfiguration:")
-  (r/log (format "  - Timeout %s" timeout)))
+  [_type {:keys [nses targets timeout config]}]
+  (let [{:keys [ns-patterns skip-meta focus-meta]} config]
+    (r/log "\nConfiguration:")
+    (r/log (format "  - Timeout: %s" timeout))
+    (r/log (format "  - NS patterns: %s" ns-patterns))
+    (cond
+      (seq focus-meta) (r/log (format "  - Focus meta: %s" focus-meta))
+      (seq skip-meta) (r/log (format "  - Skip meta: %s" skip-meta)))
+    (r/log (format "\nFound %s target(s) in %s namespace(s):" (count targets) (count nses)))
+    (r/log (->> targets
+                (mapv #(format "  - %s" (-> % meta ::f/target)))
+                (str/join \newline)))))
 
 
 (defmethod r/report :end-run-jazzer
