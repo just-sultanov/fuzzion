@@ -6,8 +6,6 @@
 .nrepl-port
 .project
 .settings
-coverage
-fuzz/
 mise.toml
 pom.xml
 target
