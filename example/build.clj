@@ -6,7 +6,8 @@
 (defn clean
   [_]
   (println "Cleaning...")
-  (b/delete {:path "target"}))
+  (doseq [dir ["target" "fuzz"]]
+    (b/delete {:path dir})))
 
 
 (defn fuzz:compile
