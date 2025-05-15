@@ -17,11 +17,10 @@
 
 (def spec
   {:spec
-   {;; ;; TODO: [2025-04-28, Ilshat Sultanov] Temporarily disable some options
-    ;; :config {:ref "<FILE>"
-    ;;          :desc "Load configuration from a file (default: ./fuzzion.edn)"
-    ;;          :alias :c
-    ;;          }
+   {:config {:ref "<FILE>"
+             :desc "Load configuration from a file (default: ./fuzzion.edn)"
+             :default "fuzzion.edn"
+             :alias :c}
     :classpath {:ref "<CLASSPATH>"
                 :desc "Specifies the classpath for fuzzer targets and dependencies (default: java.class.path system property)"
                 :alias :cp}
