@@ -1,0 +1,23 @@
+{:report-dir "fuzz/reports"
+ :corpus-dir "fuzz/corpus"
+ :coverage-dir "fuzz/coverage"
+ :reproducer-dir "fuzz/reproducers"
+ :crash-dir "fuzz/crashes"
+
+ :skip-meta [:skip]
+ ;; :focus-meta [:fuzz]
+
+ :ns-patterns [".+-fuzzer$"]
+
+ :overrides
+ {".*"
+  {"--jvm_args" "--enable-preview:-Xmx1000m:-XX:-OmitStackTraceInFastThrow:-XX:+UseParallelGC:-XX:+CriticalJNINative:-XX:+EnableDynamicAgentLoading"
+   "--keep_going" 10
+   "-timeout" 300
+   "-reduce_inputs" 0
+   "-use_value_profile" 1
+   "-create_missing_dirs" 1
+   "-print_final_stats" 1
+   "-print_corpus_stats" 1
+   "-print_coverage" 1
+   "-print_full_coverage" 1}}}
