@@ -232,7 +232,7 @@
 (def default-config
   {:report-dir "fuzz/reports"
    :corpus-dir "fuzz/corpus"
-   :ns-patterns [".+\-fuzzer$"]
+   :ns-patterns [".+-fuzzer$"]
    :skip-meta [:skip]
    :focus-meta []})
 
