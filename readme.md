@@ -91,91 +91,120 @@ Configuration:
   - Skip meta: [:skip]
 
 Found 1 target(s) in 1 namespace(s):
-  - example.core-fuzzer/square
+  - example.fuzzers.core-fuzzer/square
 
 
-Target: example.core-fuzzer/square
+Target: example.fuzzers.core-fuzzer/square
 
-[example.core-fuzzer/square] - Command: jazzer -create_missing_dirs=1 -artifact_prefix=fuzz/crashes/example/core_fuzzer/square/ --reproducer_path=fuzz/reproducers/example/core_fuzzer/square/ --cp=src/fuzz/clojure:target/classes:src/main/clojure:/home/developer/fuzzion/src/main/clojure:/home/developer/fuzzion/src/main/resources:/home/developer/.m2/repository/org/clojure/clojure/1.12.0/clojure-1.12.0.jar:/home/developer/.m2/repository/babashka/fs/0.5.25/fs-0.5.25.jar:/home/developer/.m2/repository/babashka/process/0.6.23/process-0.6.23.jar:/home/developer/.m2/repository/camel-snake-kebab/camel-snake-kebab/0.4.3/camel-snake-kebab-0.4.3.jar:/home/developer/.m2/repository/com/code-intelligence/jazzer-api/0.24.0/jazzer-api-0.24.0.jar:/home/developer/.m2/repository/io/github/tonsky/clj-reload/0.9.6/clj-reload-0.9.6.jar:/home/developer/.m2/repository/org/babashka/cli/0.8.65/cli-0.8.65.jar:/home/developer/.m2/repository/org/clojure/core.specs.alpha/0.4.74/core.specs.alpha-0.4.74.jar:/home/developer/.m2/repository/org/clojure/spec.alpha/0.5.238/spec.alpha-0.5.238.jar --target_class=example.core_fuzzer.Square --jvm_args=--enable-preview:-Xmx1000m:-XX:-OmitStackTraceInFastThrow:-XX:+UseParallelGC:-XX:+CriticalJNINative:-XX:+EnableDynamicAgentLoading fuzz/corpus/example/core_fuzzer/square
-[example.core-fuzzer/square] - INFO: Loaded 311 hooks from com.code_intelligence.jazzer.runtime.TraceCmpHooks
-[example.core-fuzzer/square] - INFO: Loaded 5 hooks from com.code_intelligence.jazzer.runtime.TraceDivHooks
-[example.core-fuzzer/square] - INFO: Loaded 2 hooks from com.code_intelligence.jazzer.runtime.TraceIndirHooks
-[example.core-fuzzer/square] - INFO: Loaded 4 hooks from com.code_intelligence.jazzer.runtime.NativeLibHooks
-[example.core-fuzzer/square] - INFO: Loaded 3388 hooks from com.code_intelligence.jazzer.sanitizers.ClojureLangHooks
-[example.core-fuzzer/square] - INFO: Loaded 5 hooks from com.code_intelligence.jazzer.sanitizers.Deserialization
-[example.core-fuzzer/square] - INFO: Loaded 5 hooks from com.code_intelligence.jazzer.sanitizers.ExpressionLanguageInjection
-[example.core-fuzzer/square] - INFO: Loaded 70 hooks from com.code_intelligence.jazzer.sanitizers.LdapInjection
-[example.core-fuzzer/square] - INFO: Loaded 46 hooks from com.code_intelligence.jazzer.sanitizers.NamingContextLookup
-[example.core-fuzzer/square] - INFO: Loaded 1 hooks from com.code_intelligence.jazzer.sanitizers.OsCommandInjection
-[example.core-fuzzer/square] - INFO: Loaded 52 hooks from com.code_intelligence.jazzer.sanitizers.ReflectiveCall
-[example.core-fuzzer/square] - INFO: Loaded 8 hooks from com.code_intelligence.jazzer.sanitizers.RegexInjection
-[example.core-fuzzer/square] - INFO: Loaded 16 hooks from com.code_intelligence.jazzer.sanitizers.RegexRoadblocks
-[example.core-fuzzer/square] - INFO: Loaded 12 hooks from com.code_intelligence.jazzer.sanitizers.ScriptEngineInjection
-[example.core-fuzzer/square] - INFO: Loaded 3 hooks from com.code_intelligence.jazzer.sanitizers.ServerSideRequestForgery
-[example.core-fuzzer/square] - INFO: Loaded 19 hooks from com.code_intelligence.jazzer.sanitizers.SqlInjection
-[example.core-fuzzer/square] - INFO: Loaded 6 hooks from com.code_intelligence.jazzer.sanitizers.XPathInjection
-[example.core-fuzzer/square] - INFO: Instrumented example.core_fuzzer.Square (took 73 ms, size +53%)
-[example.core-fuzzer/square] - INFO: using inputs from: fuzz/corpus/example/core_fuzzer/square
-[example.core-fuzzer/square] - INFO: found LLVMFuzzerCustomMutator (0x10e1f7250). Disabling -len_control by default.
-[example.core-fuzzer/square] - INFO: libFuzzer ignores flags that start with '--'
-[example.core-fuzzer/square] - INFO: Running with entropic power schedule (0xFF, 100).
-[example.core-fuzzer/square] - INFO: Seed: 2665151203
-[example.core-fuzzer/square] - INFO: Loaded 1 modules   (512 inline 8-bit counters): 512 [0x7f7bb9503000, 0x7f7bb9503200),
-[example.core-fuzzer/square] - INFO: Loaded 1 PC tables (512 PCs): 512 [0x7f7bb2b94e00,0x7f7bb2b96e00),
-[example.core-fuzzer/square] - INFO:        0 files found in fuzz/corpus/example/core_fuzzer/square
-[example.core-fuzzer/square] - INFO: -max_len is not provided; libFuzzer will not generate inputs larger than 4096 bytes
-[example.core-fuzzer/square] - INFO: Instrumented clojure.lang.Var (took 106 ms, size +32%)
-[example.core-fuzzer/square] - INFO: Instrumented clojure.lang.IFn (took 3 ms, size +0%)
-[example.core-fuzzer/square] - INFO: Instrumented clojure.lang.IRef (took 0 ms, size +0%)
-[example.core-fuzzer/square] - INFO: Instrumented clojure.lang.IDeref (took 8 ms, size +11%)
-[example.core-fuzzer/square] - INFO: Instrumented clojure.lang.Settable (took 0 ms, size +0%)
-[example.core-fuzzer/square] - INFO: Instrumented clojure.lang.ARef (took 20 ms, size +24%)
-[example.core-fuzzer/square] - INFO: Instrumented clojure.lang.AReference (took 8 ms, size +10%)
-[example.core-fuzzer/square] - INFO: Instrumented clojure.lang.IReference (took 0 ms, size +0%)
-[example.core-fuzzer/square] - INFO: Instrumented clojure.lang.IMeta (took 0 ms, size +0%)
+[example.fuzzers.core-fuzzer/square] - Command: jazzer --reproducer_path=fuzz/reproducers/example/fuzzers/core_fuzzer/square/ -use_value_profile=1 --coverage_report=fuzz/coverage/example/fuzzers/core_fuzzer/square/report.txt --target_class=example.fuzzers.core_fuzzer.Square --instrumentation_includes=example.** -print_coverage=1 -create_missing_dirs=1 --cp=src/fuzz/clojure:target/classes:src/main/clojure:/home/developer/fuzzion/src/main/clojure:/home/developer/fuzzion/src/main/resources:/home/developer/.m2/repository/org/clojure/clojure/1.12.0/clojure-1.12.0.jar:/home/developer/.m2/repository/babashka/fs/0.5.25/fs-0.5.25.jar:/home/developer/.m2/repository/babashka/process/0.6.23/process-0.6.23.jar:/home/developer/.m2/repository/camel-snake-kebab/camel-snake-kebab/0.4.3/camel-snake-kebab-0.4.3.jar:/home/developer/.m2/repository/com/code-intelligence/jazzer-api/0.24.0/jazzer-api-0.24.0.jar:/home/developer/.m2/repository/io/github/tonsky/clj-reload/0.9.6/clj-reload-0.9.6.jar:/home/developer/.m2/repository/org/babashka/cli/0.8.65/cli-0.8.65.jar:/home/developer/.m2/repository/org/clojure/core.specs.alpha/0.4.74/core.specs.alpha-0.4.74.jar:/home/developer/.m2/repository/org/clojure/spec.alpha/0.5.238/spec.alpha-0.5.238.jar -timeout=300 -print_final_stats=1 --keep_going=10 -reduce_inputs=0 -print_corpus_stats=1 --coverage_dump=fuzz/coverage/example/fuzzers/core_fuzzer/square/dump.exec -dict=fuzz/dicts/example/fuzzers/core_fuzzer/square/dict --instrumentation_excludes=example.fuzzers.** -print_full_coverage=1 -artifact_prefix=fuzz/crashes/example/fuzzers/core_fuzzer/square/ --jvm_args=--enable-preview:-Xmx1000m:-XX:-OmitStackTraceInFastThrow:-XX:+UseParallelGC:-XX:+CriticalJNINative:-XX:+EnableDynamicAgentLoading fuzz/corpus/example/fuzzers/core_fuzzer/square
+[example.fuzzers.core-fuzzer/square] - INFO: Loaded 311 hooks from com.code_intelligence.jazzer.runtime.TraceCmpHooks
+[example.fuzzers.core-fuzzer/square] - INFO: Loaded 5 hooks from com.code_intelligence.jazzer.runtime.TraceDivHooks
+[example.fuzzers.core-fuzzer/square] - INFO: Loaded 2 hooks from com.code_intelligence.jazzer.runtime.TraceIndirHooks
+[example.fuzzers.core-fuzzer/square] - INFO: Loaded 4 hooks from com.code_intelligence.jazzer.runtime.NativeLibHooks
+[example.fuzzers.core-fuzzer/square] - INFO: Loaded 3388 hooks from com.code_intelligence.jazzer.sanitizers.ClojureLangHooks
+[example.fuzzers.core-fuzzer/square] - INFO: Loaded 5 hooks from com.code_intelligence.jazzer.sanitizers.Deserialization
+[example.fuzzers.core-fuzzer/square] - INFO: Loaded 5 hooks from com.code_intelligence.jazzer.sanitizers.ExpressionLanguageInjection
+[example.fuzzers.core-fuzzer/square] - INFO: Loaded 70 hooks from com.code_intelligence.jazzer.sanitizers.LdapInjection
+[example.fuzzers.core-fuzzer/square] - INFO: Loaded 46 hooks from com.code_intelligence.jazzer.sanitizers.NamingContextLookup
+[example.fuzzers.core-fuzzer/square] - INFO: Loaded 1 hooks from com.code_intelligence.jazzer.sanitizers.OsCommandInjection
+[example.fuzzers.core-fuzzer/square] - INFO: Loaded 52 hooks from com.code_intelligence.jazzer.sanitizers.ReflectiveCall
+[example.fuzzers.core-fuzzer/square] - INFO: Loaded 8 hooks from com.code_intelligence.jazzer.sanitizers.RegexInjection
+[example.fuzzers.core-fuzzer/square] - INFO: Loaded 16 hooks from com.code_intelligence.jazzer.sanitizers.RegexRoadblocks
+[example.fuzzers.core-fuzzer/square] - INFO: Loaded 12 hooks from com.code_intelligence.jazzer.sanitizers.ScriptEngineInjection
+[example.fuzzers.core-fuzzer/square] - INFO: Loaded 3 hooks from com.code_intelligence.jazzer.sanitizers.ServerSideRequestForgery
+[example.fuzzers.core-fuzzer/square] - INFO: Loaded 19 hooks from com.code_intelligence.jazzer.sanitizers.SqlInjection
+[example.fuzzers.core-fuzzer/square] - INFO: Loaded 6 hooks from com.code_intelligence.jazzer.sanitizers.XPathInjection
+[example.fuzzers.core-fuzzer/square] - INFO: Instrumented example.fuzzers.core_fuzzer.Square with custom hooks only (took 42 ms, size +19%)
+[example.fuzzers.core-fuzzer/square] - INFO: using inputs from: fuzz/corpus/example/fuzzers/core_fuzzer/square
+[example.fuzzers.core-fuzzer/square] - INFO: found LLVMFuzzerCustomMutator (0x109c06250). Disabling -len_control by default.
+[example.fuzzers.core-fuzzer/square] - INFO: libFuzzer ignores flags that start with '--'
+[example.fuzzers.core-fuzzer/square] - INFO: Running with entropic power schedule (0xFF, 100).
+[example.fuzzers.core-fuzzer/square] - INFO: Seed: 1499000910
+[example.fuzzers.core-fuzzer/square] - INFO: Loaded 1 modules   (512 inline 8-bit counters): 512 [0x7fe74a800000, 0x7fe74a800200),
+[example.fuzzers.core-fuzzer/square] - INFO: Loaded 1 PC tables (512 PCs): 512 [0x7fe742ae0200,0x7fe742ae2200),
+[example.fuzzers.core-fuzzer/square] - INFO:      105 files found in fuzz/corpus/example/fuzzers/core_fuzzer/square
+[example.fuzzers.core-fuzzer/square] - INFO: -max_len is not provided; libFuzzer will not generate inputs larger than 4096 bytes
+[example.fuzzers.core-fuzzer/square] - INFO: Instrumented clojure.lang.Var with custom hooks only (took 98 ms, size +21%)
+[example.fuzzers.core-fuzzer/square] - INFO: Instrumented clojure.lang.IFn with custom hooks only (took 0 ms, size +0%)
+[example.fuzzers.core-fuzzer/square] - INFO: Instrumented clojure.lang.IRef with custom hooks only (took 0 ms, size +0%)
+[example.fuzzers.core-fuzzer/square] - INFO: Instrumented clojure.lang.IDeref with custom hooks only (took 5 ms, size +0%)
+[example.fuzzers.core-fuzzer/square] - INFO: Instrumented clojure.lang.Settable with custom hooks only (took 0 ms, size +0%)
+[example.fuzzers.core-fuzzer/square] - INFO: Instrumented clojure.lang.ARef with custom hooks only (took 11 ms, size +11%)
+[example.fuzzers.core-fuzzer/square] - INFO: Instrumented clojure.lang.AReference with custom hooks only (took 5 ms, size +0%)
+[example.fuzzers.core-fuzzer/square] - INFO: Instrumented clojure.lang.IReference with custom hooks only (took 0 ms, size +0%)
+[example.fuzzers.core-fuzzer/square] - INFO: Instrumented clojure.lang.IMeta with custom hooks only (took 0 ms, size +0%)
 
 # ...
 
-[example.core-fuzzer/square] - INFO: Instrumented example.core_fuzzer$fn__364 (took 3 ms, size +51%)
-[example.core-fuzzer/square] - INFO: Instrumented example.core_fuzzer$_square_fuzzerTestOneInput (took 4 ms, size +74%)
-[example.core-fuzzer/square] - INFO: A corpus is not provided, starting from an empty corpus
-[example.core-fuzzer/square] - #2       pulse  ft: 42 exec/s: 0 rss: 698Mb
-[example.core-fuzzer/square] 00:00:10.000 - #2  INITED cov: 42 ft: 42 corp: 1/1b exec/s: 0 rss: 698Mb
-[example.core-fuzzer/square] 00:00:09.995 - #4  pulse  cov: 42 ft: 42 corp: 1/1b lim: 4 exec/s: 0 rss: 698Mb
-[example.core-fuzzer/square] 00:00:09.994 - #8  pulse  cov: 42 ft: 42 corp: 1/1b lim: 4 exec/s: 0 rss: 698Mb
-[example.core-fuzzer/square] 00:00:09.994 - #16 pulse  cov: 42 ft: 42 corp: 1/1b lim: 4 exec/s: 1 rss: 698Mb
-[example.core-fuzzer/square] 00:00:09.987 - INFO: Instrumented clojure.lang.Compiler$FISupport (took 6 ms, size +28%)
-[example.core-fuzzer/square] 00:00:09.976 - INFO: Instrumented clojure.asm.Handle (took 10 ms, size +54%)
-[example.core-fuzzer/square] 00:00:09.970 -
-[example.core-fuzzer/square] 00:00:09.969 - == Java Exception: com.code_intelligence.jazzer.api.FuzzerSecurityIssueHigh: You found a bug
-[example.core-fuzzer/square] 00:00:09.969 -     at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
-[example.core-fuzzer/square] 00:00:09.969 -     at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
-[example.core-fuzzer/square] 00:00:09.969 -     at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
-[example.core-fuzzer/square] 00:00:09.969 -     at clojure.lang.Reflector.invokeConstructor(Reflector.java:334)
-[example.core-fuzzer/square] 00:00:09.969 -     at fuzzion.core$issue.invokeStatic(core.clj:451)
-[example.core-fuzzer/square] 00:00:09.969 -     at fuzzion.core$issue.invoke(core.clj:425)
-[example.core-fuzzer/square] 00:00:09.969 -     at example.core_fuzzer$_square_fuzzerTestOneInput.invokeStatic(core_fuzzer.clj:19)
-[example.core-fuzzer/square] 00:00:09.969 -     at example.core_fuzzer$_square_fuzzerTestOneInput.invoke(core_fuzzer.clj:15)
-[example.core-fuzzer/square] 00:00:09.969 -     at example.core_fuzzer.Square.fuzzerTestOneInput(Unknown Source)
-[example.core-fuzzer/square] 00:00:09.969 - DEDUP_TOKEN: c0473327d1493082
-[example.core-fuzzer/square] 00:00:09.969 - == libFuzzer crashing input ==
-[example.core-fuzzer/square] 00:00:09.968 - MS: 4 CrossOver-Custom-ChangeBit-Custom-; base unit: adc83b19e793491b1c6ea0fd8b46cd9f32e592fc
-[example.core-fuzzer/square] 00:00:09.968 - 0x2,
-[example.core-fuzzer/square] 00:00:09.968 - \002
-[example.core-fuzzer/square] 00:00:09.968 - artifact_prefix='fuzz/crashes/example/core_fuzzer/square/'; Test unit written to fuzz/crashes/example/core_fuzzer/square/crash-c4ea21bb365bbeeaf5f2c654883e56d11e43c44e
-[example.core-fuzzer/square] 00:00:09.968 - Base64: Ag==
-[example.core-fuzzer/square] 00:00:09.962 - reproducer_path='fuzz/reproducers/example/core_fuzzer/square/'; Java reproducer written to fuzz/reproducers/example/core_fuzzer/square/Crash_c4ea21bb365bbeeaf5f2c654883e56d11e43c44e.java
-[example.core-fuzzer/square] 00:00:09.961 -
-[example.core-fuzzer/square] Started at: 2025-05-15T23:11:38.688852
-[example.core-fuzzer/square] Finished at: 2025-05-15T23:11:55.282596
-[example.core-fuzzer/square] Lead time: 00:00:16.593
-[example.core-fuzzer/square] Exit code: 1
+[example.fuzzers.core-fuzzer/square] - INFO: Instrumented example.fuzzers.core_fuzzer$fn__364 with custom hooks only (took 5 ms, size +39%)
+[example.fuzzers.core-fuzzer/square] - INFO: Instrumented example.fuzzers.core_fuzzer$_square_fuzzerTestOneInput with custom hooks only (took 5 ms, size +29%)
+[example.fuzzers.core-fuzzer/square] - INFO: seed corpus: files: 105 min: 1b max: 210b total: 2707b rss: 742Mb
+[example.fuzzers.core-fuzzer/square] - #2       pulse  ft: 4 exec/s: 0 rss: 742Mb
+[example.fuzzers.core-fuzzer/square] - INFO: Instrumented clojure.lang.Compiler$FISupport with custom hooks only (took 6 ms, size +0%)
+[example.fuzzers.core-fuzzer/square] - INFO: Instrumented clojure.asm.Handle with custom hooks only (took 9 ms, size +0%)
+[example.fuzzers.core-fuzzer/square] -
+[example.fuzzers.core-fuzzer/square] - == Java Exception: com.code_intelligence.jazzer.api.FuzzerSecurityIssueHigh: You found a bug
+[example.fuzzers.core-fuzzer/square] -  at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
+[example.fuzzers.core-fuzzer/square] -  at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
+[example.fuzzers.core-fuzzer/square] -  at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
+[example.fuzzers.core-fuzzer/square] -  at clojure.lang.Reflector.invokeConstructor(Reflector.java:334)
+[example.fuzzers.core-fuzzer/square] -  at fuzzion.core$issue.invokeStatic(core.clj:451)
+[example.fuzzers.core-fuzzer/square] -  at fuzzion.core$issue.invoke(core.clj:425)
+[example.fuzzers.core-fuzzer/square] -  at example.fuzzers.core_fuzzer$_square_fuzzerTestOneInput.invokeStatic(core_fuzzer.clj:19)
+[example.fuzzers.core-fuzzer/square] -  at example.fuzzers.core_fuzzer$_square_fuzzerTestOneInput.invoke(core_fuzzer.clj:15)
+[example.fuzzers.core-fuzzer/square] -  at example.fuzzers.core_fuzzer.Square.fuzzerTestOneInput(Unknown Source)
+[example.fuzzers.core-fuzzer/square] - DEDUP_TOKEN: 262482a3bb5c872e
+[example.fuzzers.core-fuzzer/square] - == libFuzzer crashing input ==
+[example.fuzzers.core-fuzzer/square] - MS: 0 ; base unit: 0000000000000000000000000000000000000000
+[example.fuzzers.core-fuzzer/square] - 0x2,
+[example.fuzzers.core-fuzzer/square] - \002
+[example.fuzzers.core-fuzzer/square] - artifact_prefix='fuzz/crashes/example/fuzzers/core_fuzzer/square/'; Test unit written to fuzz/crashes/example/fuzzers/core_fuzzer/square/crash-c4ea21bb365bbeeaf5f2c654883e56d11e43c44e
+[example.fuzzers.core-fuzzer/square] - Base64: Ag==
+[example.fuzzers.core-fuzzer/square] - INFO: __sanitizer_symbolize_pc or __sanitizer_get_module_and_offset_for_pc is not available, not printing coverage
+[example.fuzzers.core-fuzzer/square] - INFO: __sanitizer_symbolize_pc or __sanitizer_get_module_and_offset_for_pc is not available, not printing coverage
+[example.fuzzers.core-fuzzer/square] -   [  0 c9ee5681d3c59f7541c27a38b67edf46259e187b] sz:     1 runs:     0 succ:     0 focus: 0
+[example.fuzzers.core-fuzzer/square] - stat::number_of_executed_units: 3
+[example.fuzzers.core-fuzzer/square] - stat::average_exec_per_sec:     0
+[example.fuzzers.core-fuzzer/square] - stat::new_units_added:          0
+[example.fuzzers.core-fuzzer/square] - stat::slowest_unit_time_sec:    0
+[example.fuzzers.core-fuzzer/square] - stat::peak_rss_mb:              742
+[example.fuzzers.core-fuzzer/square] - reproducer_path='fuzz/reproducers/example/fuzzers/core_fuzzer/square/'; Java reproducer written to fuzz/reproducers/example/fuzzers/core_fuzzer/square/Crash_c4ea21bb365bbeeaf5f2c654883e56d11e43c44e.java
+[example.fuzzers.core-fuzzer/square] -
+[example.fuzzers.core-fuzzer/square] - #4       pulse  cov: 4 ft: 9 corp: 2/2b exec/s: 0 rss: 742Mb
+[example.fuzzers.core-fuzzer/square] - #8       pulse  cov: 4 ft: 9 corp: 2/2b exec/s: 0 rss: 742Mb
+[example.fuzzers.core-fuzzer/square] - #16      pulse  cov: 4 ft: 9 corp: 2/2b exec/s: 1 rss: 742Mb
+[example.fuzzers.core-fuzzer/square] - #32      pulse  cov: 4 ft: 9 corp: 2/2b exec/s: 2 rss: 742Mb
+[example.fuzzers.core-fuzzer/square] - #64      pulse  cov: 4 ft: 9 corp: 2/2b exec/s: 5 rss: 742Mb
+[example.fuzzers.core-fuzzer/square] 00:00:10.000 - #106        INITED cov: 4 ft: 9 corp: 2/2b exec/s: 9 rss: 742Mb
+[example.fuzzers.core-fuzzer/square] 00:00:09.993 - #128        pulse  cov: 4 ft: 9 corp: 2/2b lim: 4 exec/s: 11 rss: 742Mb
+[example.fuzzers.core-fuzzer/square] 00:00:09.993 - #256        pulse  cov: 4 ft: 9 corp: 2/2b lim: 6 exec/s: 23 rss: 742Mb
+[example.fuzzers.core-fuzzer/square] 00:00:09.993 - #512        pulse  cov: 4 ft: 9 corp: 2/2b lim: 8 exec/s: 46 rss: 742Mb
+[example.fuzzers.core-fuzzer/square] 00:00:09.988 - #1024       pulse  cov: 4 ft: 9 corp: 2/2b lim: 14 exec/s: 93 rss: 742Mb
+[example.fuzzers.core-fuzzer/square] 00:00:09.980 - #2048       pulse  cov: 4 ft: 9 corp: 2/2b lim: 21 exec/s: 186 rss: 742Mb
+[example.fuzzers.core-fuzzer/square] 00:00:09.967 - #4096       pulse  cov: 4 ft: 9 corp: 2/2b lim: 43 exec/s: 372 rss: 742Mb
+[example.fuzzers.core-fuzzer/square] 00:00:09.940 - #8192       pulse  cov: 4 ft: 9 corp: 2/2b lim: 80 exec/s: 744 rss: 742Mb
+[example.fuzzers.core-fuzzer/square] 00:00:09.904 - #16384      pulse  cov: 4 ft: 9 corp: 2/2b lim: 163 exec/s: 1489 rss: 742Mb
+[example.fuzzers.core-fuzzer/square] 00:00:09.803 - #32768      pulse  cov: 4 ft: 9 corp: 2/2b lim: 325 exec/s: 2978 rss: 742Mb
+[example.fuzzers.core-fuzzer/square] 00:00:08.661
+[example.fuzzers.core-fuzzer/square] 00:00:08.468 - #65536      pulse  cov: 4 ft: 9 corp: 2/2b lim: 652 exec/s: 5957 rss: 742Mb
+[example.fuzzers.core-fuzzer/square] 00:00:07.898 - #131072     pulse  cov: 4 ft: 9 corp: 2/2b lim: 1300 exec/s: 10922 rss: 742Mb
+[example.fuzzers.core-fuzzer/square] 00:00:06.655
+[example.fuzzers.core-fuzzer/square] 00:00:05.872 - #262144     pulse  cov: 4 ft: 9 corp: 2/2b lim: 2611 exec/s: 20164 rss: 742Mb
+[example.fuzzers.core-fuzzer/square] 00:00:04.654
+[example.fuzzers.core-fuzzer/square] 00:00:02.654
+[example.fuzzers.core-fuzzer/square] 00:00:01.856 - #524288     pulse  cov: 4 ft: 9 corp: 2/2b lim: 4096 exec/s: 34952 rss: 742Mb
+[example.fuzzers.core-fuzzer/square] 00:00:00.651
+[example.fuzzers.core-fuzzer/square] 00:00:00.000 - TIMEOUT
+[example.fuzzers.core-fuzzer/square] Started at: 2025-05-16T00:20:17.543990
+[example.fuzzers.core-fuzzer/square] Finished at: 2025-05-16T00:20:38.023347
+[example.fuzzers.core-fuzzer/square] Lead time: 00:00:20.479
+[example.fuzzers.core-fuzzer/square] Exit code: 77
 
 
 Fuzzing has been completed for 1 target(s) in 1 namespace(s):
-  - example.core-fuzzer/square (00:00:16.593)
+  - example.fuzzers.core-fuzzer/square (00:00:20.479)
 
-Started at: 2025-05-15T23:11:38.680025
-Finished at: 2025-05-15T23:11:55.282901
-Total lead time: 00:00:16.602
+Started at: 2025-05-16T00:20:17.537660
+Finished at: 2025-05-16T00:20:38.023658
+Total lead time: 00:00:20.485
 ```
